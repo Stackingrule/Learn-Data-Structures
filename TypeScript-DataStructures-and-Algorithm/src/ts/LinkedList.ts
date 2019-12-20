@@ -3,118 +3,118 @@ import {Node} from './models/linked-list-models'
 
 export default class LinkedList<T> {
 
-    protected count = 0;
-    protected head: Node<T> | undefined;
+  protected count = 0;
+  protected head: Node<T> | undefined;
 
-    constructor(protected equalsFn: IEqualsFunction<T> = defaultEquals) {}
+  constructor(protected equalsFn: IEqualsFunction<T> = defaultEquals) {
+  }
 
-    push(element: T) {
-        const node = new Node(element);
-        let current;
+  push(element: T) {
+    const node = new Node(element);
+    let current;
 
-        if (this.head == null) {
-            this.head = node;
-        }
-        else {
-            current = this.head;
-            while (current.next != null) {
-                current = current.next;
-            }
-            current.next = node;
-        }
-        this.count++;
+    if (this.head == null) {
+      this.head = node;
+    } else {
+      current = this.head;
+      while (current.next != null) {
+        current = current.next;
+      }
+      current.next = node;
     }
+    this.count++;
+  }
 
-    getElementAt(index: number) {
-        if (index >= 0 && index <= this.count) {
-            let node = this.head;
-            for (let i = 0; i < index && node != null; i++) {
-                node = node.next;
-            }
-            return node;
-        }
-        return undefined;
+  getElementAt(index: number) {
+    if (index >= 0 && index <= this.count) {
+      let node = this.head;
+      for (let i = 0; i < index && node != null; i++) {
+        node = node.next;
+      }
+      return node;
     }
+    return undefined;
+  }
 
-    insert(element: T, index: number): boolean {
-        if (index >= 0 && index <= this.count) {
-            const node = new Node(element);
+  insert(element: T, index: number): boolean {
+    if (index >= 0 && index <= this.count) {
+      const node = new Node(element);
 
-            if (index === 0) {
-                const current = this.head;
-                node.next = current;
-                this.head = node;
-            }
-            else {
-                const prev = this.getElementAt(index - 1);
-                node.next = prev?.next;
-                prev?.next = node;
-            }
-            this.count++;
-            return true;
-        }
-        return false;
+      if (index === 0) {
+        const current = this.head;
+        node.next = current;
+        this.head = node;
+      } else {
+        const prev = this.getElementAt(index - 1);
+        node.next = prev?.next;
+        // @ts-ignore
+        prev?.next = node;
+      }
+      this.count++;
+      return true;
     }
+    return false;
+  }
 
-    removeAt(index: number) {
-        if(index >= 0 && index <= this.count) {
-            let current = this.head;
+  removeAt(index: number) {
+    if (index >= 0 && index <= this.count) {
+      let current = this.head;
 
-            if(index === 0) {
-                const prev = this.getElementAt(index - 1);
-                current = prev?.next;
-                prev?.next = current?.next;
-            }
-            this.count--;
-            return current?.Element;
-        }
-        return undefined;
+      if (index === 0) {
+        const prev = this.getElementAt(index - 1);
+        current = prev?.next;
+        prev.next = current.next;
+      }
+      this.count--;
+      return current?.element;
     }
+    return undefined;
+  }
 
-    remove(element: T) {
-        const index = this.indexOf(element);
-        return this.removeAt(index);
-    }
-    
-    indexOf(element: T) {
-        let current = this.head;
+  remove(element: T) {
+    const index = this.indexOf(element);
+    return this.removeAt(index);
+  }
 
-        for(let i = 0; i <= this.count && current != null; i++) {
-            if(this.equalsFn(element, current.Element)) {
-                return i;
-            }
-            current = current.next;
-        }
-        return -1;
-    }
+  indexOf(element: T) {
+    let current = this.head;
 
-    isEmpty() {
-        return this.size() == 0;
+    for (let i = 0; i <= this.count && current != null; i++) {
+      if (this.equalsFn(element, current.element)) {
+        return i;
+      }
+      current = current.next;
     }
+    return -1;
+  }
 
-    size() {
-        return this.count;
-    }
+  isEmpty() {
+    return this.size() === 0;
+  }
 
-    getHead() {
-        return this.head;
-    }
+  size() {
+    return this.count;
+  }
 
-    clear() {
-        this.count = 0;
-        this.head = undefined;
-    }
+  getHead() {
+    return this.head;
+  }
 
-    toString() {
-        if(this.head == null) {
-            return ' ';
-        }
-        let objString = `${this.head.element}`;
-        let current = this.head.next;
-        for (let i = 1; i < this.size() && current != null; i++) {
-            objString = `${objString},${current.element}`;
-            current = current.next;
-        }
-        return objString;    
+  clear() {
+    this.count = 0;
+    this.head = undefined;
+  }
+
+  toString() {
+    if (this.head == null) {
+      return ' ';
     }
-    
+    let objString = `${this.head.element}`;
+    let current = this.head.next;
+    for (let i = 1; i < this.size() && current != null; i++) {
+      objString = `${objString},${current.element}`;
+      current = current.next;
+    }
+    return objString;
+  }
+}
