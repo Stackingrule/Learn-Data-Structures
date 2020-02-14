@@ -44,7 +44,7 @@ public abstract class AbstractList<E> implements List<E> {
     }
 
     protected void rangeCheck(int index) {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index > size) {
             outOfBounds(index);
         }
     }

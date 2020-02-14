@@ -2,9 +2,6 @@ package LinkedList;
 
 public class SingleLinkedList<E> extends AbstractList<E> {
 
-    private int size;
-    private Node<E> dummyNode; // 头节点
-
     private static class Node<E> {
         E element;
         Node<E> next;
@@ -13,6 +10,24 @@ public class SingleLinkedList<E> extends AbstractList<E> {
             this.element = element;
             this.next = next;
         }
+
+        public Node(E e){
+            this(e, null);
+        }
+
+        public Node(){
+            this(null, null);
+        }
+    }
+
+
+    private int size;
+    private Node<E> dummyNode; // 头节点
+
+
+    public SingleLinkedList() {
+        dummyNode = new Node<E>();
+        size = 0;
     }
 
     @Override
@@ -36,37 +51,72 @@ public class SingleLinkedList<E> extends AbstractList<E> {
 
     @Override
     public void add(int index, E element) {
-        if (index == 0) {
 
-        } else {
+
             Node<E> prev = getNode(index - 1);
             prev.next = new Node<E>(element, prev.next);
             size++;
-        }
+
+
+
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        rangeCheck(index);
+        Node<E> prev =  getNode(index );
+        Node<E> cur = getNode(index);
+        prev.next = cur.next;
+        size--;
+        return cur.element;
+
     }
 
     @Override
     public int indexOf(E element) {
-        return 0;
+        if (element == null) {
+            Node<E> node = dummyNode;
+            for (int i = 0; i < size; i++) {
+                if (node.element == null) return i;
+
+                node = node.next;
+            }
+        } else {
+            Node<E> node = dummyNode;
+            for (int i = 0; i < size; i++) {
+                if (element.equals(node.element)) return i;
+
+                node = node.next;
+            }
+        }
+        return ELEMENT_NOT_FOUND;
     }
 
     private Node<E> getNode(int index) {
         rangeCheck(index);
 
         Node<E> node = dummyNode;
-        for (int i = 0; i < index; i++) {
+        for (int i = 0; i < index + 1; i++) {
             node = node.next;
         }
 
         return node;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("size = ").append(size).append(", [ ");
+        Node<E> node = dummyNode;
+        for (int i = 0; i < size; i++) {
+            if (i != 0) {
+                builder.append(", ");
+            }
+            builder.append(node.element);
+            node = node.next;
+        }
 
-
-
+        builder.append(" ]");
+        return builder.toString();
+    }
 }
